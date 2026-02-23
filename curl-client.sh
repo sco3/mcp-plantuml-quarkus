@@ -51,7 +51,7 @@ curl -s -X POST \
 # --- List Tools ---
 echo "--- Sending tools/list ---"
 
-curl -v -X POST \
+curl -s -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json, text/event-stream" \
     -H "Mcp-Session-Id: $SESSION_ID" \
