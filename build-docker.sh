@@ -1,0 +1,1 @@
+./gradlew build -Dquarkus.container-image.build=true
