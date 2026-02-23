@@ -28,7 +28,7 @@ public class PlantUmlTool {
         byte[] imageBytes = os.toByteArray();
 
         String base64Image = Base64.getEncoder().encodeToString(imageBytes);
-        LOG.info("result:{}", base64Image);
+        LOG.info("Generated SVG image of size {} bytes.", imageBytes.length);
 
         return new ImageContent(base64Image, "image/svg");
     }
