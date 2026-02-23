@@ -6,10 +6,9 @@ URL="http://localhost:8080/mcp"
 
 echo "--- Initializing ---"
 # 1. Initialize
-# We don't capture the body (it's empty) - we only care about headers.txt
 curl -s -X POST \
   -H "Content-Type: application/json" \
-  -H "Accept: application/json" \
+  -H "Accept: application/json, text/event-stream" \
   -D headers.txt \
   -d '{
     "jsonrpc": "2.0",
