@@ -12,7 +12,7 @@ import net.sourceforge.plantuml.SourceStringReader;
 
 public class PlantUmlTool {
 
-    @Tool(description = "Renders a PlantUML string into a PNG image.")
+    @Tool(description = "Renders a PlantUML string into a SVG image.")
     public ImageContent renderDiagram(
             @ToolArg(description = "The PlantUML source code (starting with @startuml and ending with @enduml).") String source)
             throws Exception {
@@ -24,6 +24,6 @@ public class PlantUmlTool {
 
         String base64Image = Base64.getEncoder().encodeToString(imageBytes);
 
-        return new ImageContent(base64Image, "image/png");
+        return new ImageContent(base64Image, "image/svg+xml");
     }
 }
