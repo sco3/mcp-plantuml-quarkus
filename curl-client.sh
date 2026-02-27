@@ -6,7 +6,7 @@ URL="http://localhost:8080/mcp"
 
 echo "--- Initializing ---"
 # 1. Initialize
-curl -s -X POST \
+INIT_RESPONSE=$(curl -s -X POST \
   -H "Content-Type: application/json" \
   -H "Accept: application/json, text/event-stream" \
   -D headers.txt \
@@ -19,7 +19,9 @@ curl -s -X POST \
       "clientInfo": { "name": "curl-test", "version": "1.0.0" }
     },
     "id": 1
-  }' "$URL" >/dev/null
+  }' "$URL")
+
+echo "Init Response: $INIT_RESPONSE"
 
 # 2. Extract Session ID
 SESSION_ID=$(grep -i "mcp-session-id" headers.txt | awk '{print $2}' | tr -d '\r')
@@ -36,6 +38,7 @@ echo "Session ID: $SESSION_ID"
 echo "--- Sending Initialized Notification ---"
 curl -s -X POST \
   -H "Content-Type: application/json" \
+  -H "Accept: application/json, text/event-stream" \
   -H "Mcp-Session-Id: $SESSION_ID" \
   -d '{
     "jsonrpc": "2.0",
@@ -48,6 +51,7 @@ echo -e "\n--- Calling renderDiagram ---"
 # because it's a synchronous HTTP POST in this session mode.
 RESPONSE=$(curl -s -X POST \
   -H "Content-Type: application/json" \
+  -H "Accept: application/json, text/event-stream" \
   -H "Mcp-Session-Id: $SESSION_ID" \
   -d '{
     "jsonrpc": "2.0",
@@ -70,7 +74,7 @@ if [[ -n "$BASE64_CONTENT" ]]; then
   echo "${BASE64_CONTENT:0:100}..."
   
   # Optionally decode and save to file
-  echo -e "\n--- Decoding to output.png ---"
-  echo "$BASE64_CONTENT" | base64 -d > output.png
-  echo "Saved PNG image to output.png"
+  echo -e "\n--- Decoding to output.svg ---"
+  echo "$BASE64_CONTENT" | base64 -d > output.svg
+  echo "Saved SVG image to output.svg"
 fi
