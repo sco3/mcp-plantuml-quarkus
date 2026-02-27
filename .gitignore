@@ -41,3 +41,4 @@ nb-configuration.xml
 .certs/
 headers.txt
 output.svg
+custom-jre

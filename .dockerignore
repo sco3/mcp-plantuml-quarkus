@@ -1,4 +1,22 @@
+# Ignore everything by default
 *
+
+# Allow Gradle wrapper and build configuration
+!gradlew
+!gradlew.bat
+!gradle/
+!settings.gradle
+!build.gradle
+!gradle.properties
+
+# Allow source code
+!src/
+
+# Allow Docker-related files
+!Dockerfile
+!.dockerignore
+
+# Allow build artifacts
 !build/*-runner
 !build/*-runner.jar
 !build/lib/*
