@@ -32,23 +32,25 @@ RUN /opt/graalvm-community-java25/bin/jlink \
     --output /javaruntime
 
 # STAGE 2b: Install zlib (using ubi9-minimal with microdnf)
-FROM registry.access.redhat.com/ubi9/ubi-minimal:latest AS libs
-RUN microdnf install zlib harfbuzz freetype bzip2-libs libpng harfbuzz brotli libbrotli glib2 graphite2 -y && microdnf clean all
 
 # STAGE 3: Runner
-FROM registry.access.redhat.com/ubi9/ubi-micro:latest
+
+FROM registry.access.redhat.com/ubi9/ubi-minimal:latest
+
+RUN  microdnf install fontconfig dejavu-sans-fonts  zlib harfbuzz freetype bzip2-libs libpng harfbuzz brotli libbrotli glib2 graphite2 -y && microdnf clean all
+
+
 WORKDIR /app
 
-# Copy zlib libraries from libs stage
 
-COPY --from=libs /usr/lib64/libz.so* /usr/lib64/
-COPY --from=libs /usr/lib64/libfreetype.so* /usr/lib64/
-COPY --from=libs /usr/lib64/libbz2.so* /usr/lib64/
-COPY --from=libs /usr/lib64/libpng16.so* /usr/lib64/
-COPY --from=libs /usr/lib64/libharfbuzz.so* /usr/lib64/
-COPY --from=libs /usr/lib64/libbrotli*.so* /usr/lib64/
-COPY --from=libs /usr/lib64/libglib* /usr/lib64/
-COPY --from=libs /usr/lib64/libgraphite2.so* /usr/lib64/
+#COPY --from=libs /usr/lib64/libz.so* /usr/lib64/
+#COPY --from=libs /usr/lib64/libfreetype.so* /usr/lib64/
+#COPY --from=libs /usr/lib64/libbz2.so* /usr/lib64/
+#COPY --from=libs /usr/lib64/libpng16.so* /usr/lib64/
+#COPY --from=libs /usr/lib64/libharfbuzz.so* /usr/lib64/
+#COPY --from=libs /usr/lib64/libbrotli*.so* /usr/lib64/
+#COPY --from=libs /usr/lib64/libglib* /usr/lib64/
+#COPY --from=libs /usr/lib64/libgraphite2.so* /usr/lib64/
 
 
 # Copy the custom runtime
