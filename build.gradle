@@ -15,7 +15,8 @@ dependencies {
     implementation 'io.quarkiverse.mcp:quarkus-mcp-server-http:1.10.1'
     implementation 'io.quarkus:quarkus-arc'
     testImplementation 'io.quarkus:quarkus-junit'
-    implementation 'net.sourceforge.plantuml:plantuml:8059'
+    implementation 'net.sourceforge.plantuml:plantuml-mit:1.2026.1'
+    implementation 'io.quarkus:quarkus-awt:${quarkusPlatformVersion}'
 }
 
 group = 'ai.gateway'
