@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+
+set -xeuo pipefail
+
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+
+cd "$SCRIPT_DIR"
+
+./gradlew clean build
+
+docker build -t mcp-plantuml-boot:latest .
