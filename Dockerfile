@@ -1,5 +1,5 @@
-# STAGE 1: Build the App (using GraalVM 25)
-FROM ghcr.io/graalvm/graalvm-community:25 AS build
+# STAGE 1: Build the App (using GraalVM 21)
+FROM ghcr.io/graalvm/graalvm-community:21 AS build
 WORKDIR /app
 
 # Copy Gradle wrapper and configuration files
@@ -16,14 +16,14 @@ RUN ./gradlew clean build -x test
 # STAGE 2: Create the custom JRE
 # We now only scan the single fat JAR
 RUN JAR_FILE="build/mcp-server-plantuml-1.0.0-SNAPSHOT-runner.jar" && \
-    /opt/graalvm-community-java25/bin/jdeps \
+    /opt/graalvm-community-java21/bin/jdeps \
     --ignore-missing-deps \
     --print-module-deps \
-    --multi-release 25 \
+    --multi-release 21 \
     --class-path "$JAR_FILE" \
     "$JAR_FILE" > /modules.txt
 
-RUN /opt/graalvm-community-java25/bin/jlink \
+RUN /opt/graalvm-community-java21/bin/jlink \
     --add-modules $(cat /modules.txt) \
     --strip-debug \
     --no-man-pages \
