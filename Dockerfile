@@ -1,11 +1,9 @@
-# STAGE 1: Build the App (using GraalVM 21)
 FROM ghcr.io/graalvm/graalvm-community:21 AS build
 WORKDIR /app
 
 # Copy Gradle wrapper and configuration files
-COPY gradlew settings.gradle build.gradle gradle.properties ./
+COPY --chmod 755 gradlew settings.gradle build.gradle gradle.properties ./
 COPY gradle/ gradle/
-RUN chmod +x ./gradlew
 
 # Copy source code
 COPY src/ src/
@@ -13,27 +11,16 @@ COPY src/ src/
 # Build the project
 RUN ./gradlew clean build -x test
 
-# STAGE 2: Create the custom JRE
-# We now only scan the single fat JAR
-RUN JAR_FILE="build/mcp-server-plantuml-1.0.0-SNAPSHOT-runner.jar" && \
-    /opt/graalvm-community-java21/bin/jdeps \
-    --ignore-missing-deps \
-    --print-module-deps \
-    --multi-release 21 \
-    --class-path "$JAR_FILE" \
-    "$JAR_FILE" > /modules.txt
-
-RUN /opt/graalvm-community-java21/bin/jlink \
-    --add-modules $(cat /modules.txt) \
+RUN $JAVA_HOME/bin/jlink \
+    --add-modules java.base,java.desktop,java.xml,java.sql,java.naming,java.management,java.prefs,java.scripting,jdk.compiler,jdk.unsupported,jdk.crypto.ec,jdk.charsets \
     --strip-debug \
     --no-man-pages \
     --no-header-files \
     --compress=2 \
     --output /javaruntime
 
-# STAGE 2b: Install zlib (using ubi9-minimal with microdnf)
 
-# STAGE 3: Runner
+# Runner
 
 FROM registry.access.redhat.com/ubi9/ubi-minimal:latest
 
@@ -41,17 +28,6 @@ RUN  microdnf install fontconfig dejavu-sans-fonts  zlib harfbuzz freetype bzip2
 
 
 WORKDIR /app
-
-
-#COPY --from=libs /usr/lib64/libz.so* /usr/lib64/
-#COPY --from=libs /usr/lib64/libfreetype.so* /usr/lib64/
-#COPY --from=libs /usr/lib64/libbz2.so* /usr/lib64/
-#COPY --from=libs /usr/lib64/libpng16.so* /usr/lib64/
-#COPY --from=libs /usr/lib64/libharfbuzz.so* /usr/lib64/
-#COPY --from=libs /usr/lib64/libbrotli*.so* /usr/lib64/
-#COPY --from=libs /usr/lib64/libglib* /usr/lib64/
-#COPY --from=libs /usr/lib64/libgraphite2.so* /usr/lib64/
-
 
 # Copy the custom runtime
 COPY --from=build /javaruntime /opt/java-runtime
