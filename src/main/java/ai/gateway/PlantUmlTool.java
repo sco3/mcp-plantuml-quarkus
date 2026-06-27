@@ -11,20 +11,18 @@ import net.sourceforge.plantuml.SourceStringReader;
 
 public class PlantUmlTool {
 
-    @Tool(description = "Renders a PlantUML string into a SVG image.")
-    public ImageContent renderDiagram(
-        @ToolArg(
-            description = "The PlantUML source code (starting with @startuml and ending with @enduml)."
-        ) String source
-    ) throws Exception {
-        SourceStringReader reader = new SourceStringReader(source);
-        ByteArrayOutputStream os = new ByteArrayOutputStream();
+	@Tool(description = "Renders a PlantUML string into a SVG image.")
+	public ImageContent renderDiagram(
+			@ToolArg(description = "The PlantUML source code (starting with @startuml and ending with @enduml).") String source)
+			throws Exception {
+		SourceStringReader reader = new SourceStringReader(source);
+		ByteArrayOutputStream os = new ByteArrayOutputStream();
 
-        reader.generateImage(os, new FileFormatOption(FileFormat.SVG));
-        byte[] imageBytes = os.toByteArray();
+		reader.outputImage(os, new FileFormatOption(FileFormat.SVG));
+		byte[] imageBytes = os.toByteArray();
 
-        String base64Image = Base64.getEncoder().encodeToString(imageBytes);
+		String base64Image = Base64.getEncoder().encodeToString(imageBytes);
 
-        return new ImageContent(base64Image, "image/svg+xml");
-    }
+		return new ImageContent(base64Image, "image/svg+xml");
+	}
 }

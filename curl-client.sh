@@ -46,6 +46,25 @@ curl -s -X POST \
   }' "$URL"
 
 echo -e "\n--- Calling renderDiagram ---"
+
+curl -v -X POST \
+  -H "Content-Type: application/json" \
+  -H "Accept: application/json, text/event-stream" \
+  -H "Mcp-Session-Id: $SESSION_ID" \
+  -d '{
+    "jsonrpc": "2.0",
+    "id": 2,
+    "method": "tools/call",
+    "params": {
+      "name": "renderDiagram",
+      "arguments": {
+        "source": "@startuml\nUser -> AI: Native Quarkus Works\n@enduml"
+      }
+    }
+  }' "$URL"
+
+exit 
+
 # 4. Call Tool
 # For tool calls, Quarkus returns the JSON-RPC result in the body
 # because it's a synchronous HTTP POST in this session mode.
