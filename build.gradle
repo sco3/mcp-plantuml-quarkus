@@ -35,3 +35,11 @@ compileJava {
 compileTestJava {
     options.encoding = 'UTF-8'
 }
+
+/*
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(25)
+    }
+}
+*/

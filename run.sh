@@ -2,7 +2,7 @@
 
 set -xueo pipefail
 
-jar=$(find $(dirname $(readlink -f $0)) -name math-tool-\*-runner.jar | grep -v /gen/ )
+jar=$(find $(dirname $(readlink -f $0)) -name mcp-server-\*-runner.jar | grep -v /gen/ )
 
 
-java -jar "$jar" --quiet 
+~/prg/java-25/bin/java -jar "$jar" --quiet 

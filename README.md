@@ -1,8 +1,11 @@
-# code-with-quarkus
+# MCP Server PlantUML
 
-This project uses Quarkus, the Supersonic Subatomic Java Framework.
+A Quarkus-based MCP server that renders PlantUML diagrams into SVG images.
 
-If you want to learn more about Quarkus, please visit its website: <https://quarkus.io/>.
+## Requirements
+
+- Java 25
+- Gradle 9
 
 ## Running the application in dev mode
 
@@ -52,6 +55,12 @@ Or, if you don't have GraalVM installed, you can run the native executable build
 You can then execute your native executable with: `./build/code-with-quarkus-1.0.0-SNAPSHOT-runner`
 
 If you want to learn more about building native executables, please consult <https://quarkus.io/guides/gradle-tooling>.
+
+## Sample Output
+
+The following screenshot shows the MCP Inspector interface with the `renderDiagram` tool being used to render a PlantUML sequence diagram:
+
+![MCP Inspector showing renderDiagram tool](mcp-uml.png)
 
 ## Related Guides
 
